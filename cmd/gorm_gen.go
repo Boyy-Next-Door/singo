@@ -6,7 +6,6 @@ import (
 	"gorm.io/gen"
 	"os"
 	"singo/dal"
-	"singo/dal/method"
 )
 
 func main() {
@@ -22,7 +21,15 @@ func main() {
 	commonDB := dal.Database(os.Getenv("MYSQL_DSN"))
 	g.UseDB(commonDB)
 
-	g.ApplyInterface(func(taskMethod method.TestTable) {}, g.GenerateModel("t_test_table", gen.FieldType("deleted_at", "soft_delete.DeletedAt")))
-	g.ApplyBasic(g.GenerateModel("km_expansion_keyword"))
+	//g.ApplyInterface(func(taskMethod method.TestTable) {}, g.GenerateModel("t_test_table", gen.FieldType("deleted_at", "soft_delete.DeletedAt")))
+	g.ApplyBasic(g.GenerateModel("coupon"))
+	g.ApplyBasic(g.GenerateModel("coupon_batch"))
+	g.ApplyBasic(g.GenerateModel("coupon_issue"))
+	g.ApplyBasic(g.GenerateModel("coupon_verify"))
+	g.ApplyBasic(g.GenerateModel("customer"))
+	g.ApplyBasic(g.GenerateModel("supplier"))
+	g.ApplyBasic(g.GenerateModel("user"))
+	g.ApplyBasic(g.GenerateModel("settlement"))
+	g.ApplyBasic(g.GenerateModel("settlement_detail"))
 	g.Execute()
 }

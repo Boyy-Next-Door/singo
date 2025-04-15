@@ -17,26 +17,47 @@ import (
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:                 db,
-		KmExpansionKeyword: newKmExpansionKeyword(db, opts...),
-		TTestTable:         newTTestTable(db, opts...),
+		db:               db,
+		Coupon:           newCoupon(db, opts...),
+		CouponBatch:      newCouponBatch(db, opts...),
+		CouponIssue:      newCouponIssue(db, opts...),
+		CouponVerify:     newCouponVerify(db, opts...),
+		Customer:         newCustomer(db, opts...),
+		Settlement:       newSettlement(db, opts...),
+		SettlementDetail: newSettlementDetail(db, opts...),
+		Supplier:         newSupplier(db, opts...),
+		User:             newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	KmExpansionKeyword kmExpansionKeyword
-	TTestTable         tTestTable
+	Coupon           coupon
+	CouponBatch      couponBatch
+	CouponIssue      couponIssue
+	CouponVerify     couponVerify
+	Customer         customer
+	Settlement       settlement
+	SettlementDetail settlementDetail
+	Supplier         supplier
+	User             user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:                 db,
-		KmExpansionKeyword: q.KmExpansionKeyword.clone(db),
-		TTestTable:         q.TTestTable.clone(db),
+		db:               db,
+		Coupon:           q.Coupon.clone(db),
+		CouponBatch:      q.CouponBatch.clone(db),
+		CouponIssue:      q.CouponIssue.clone(db),
+		CouponVerify:     q.CouponVerify.clone(db),
+		Customer:         q.Customer.clone(db),
+		Settlement:       q.Settlement.clone(db),
+		SettlementDetail: q.SettlementDetail.clone(db),
+		Supplier:         q.Supplier.clone(db),
+		User:             q.User.clone(db),
 	}
 }
 
@@ -50,21 +71,42 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:                 db,
-		KmExpansionKeyword: q.KmExpansionKeyword.replaceDB(db),
-		TTestTable:         q.TTestTable.replaceDB(db),
+		db:               db,
+		Coupon:           q.Coupon.replaceDB(db),
+		CouponBatch:      q.CouponBatch.replaceDB(db),
+		CouponIssue:      q.CouponIssue.replaceDB(db),
+		CouponVerify:     q.CouponVerify.replaceDB(db),
+		Customer:         q.Customer.replaceDB(db),
+		Settlement:       q.Settlement.replaceDB(db),
+		SettlementDetail: q.SettlementDetail.replaceDB(db),
+		Supplier:         q.Supplier.replaceDB(db),
+		User:             q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	KmExpansionKeyword *kmExpansionKeywordDo
-	TTestTable         *tTestTableDo
+	Coupon           *couponDo
+	CouponBatch      *couponBatchDo
+	CouponIssue      *couponIssueDo
+	CouponVerify     *couponVerifyDo
+	Customer         *customerDo
+	Settlement       *settlementDo
+	SettlementDetail *settlementDetailDo
+	Supplier         *supplierDo
+	User             *userDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		KmExpansionKeyword: q.KmExpansionKeyword.WithContext(ctx),
-		TTestTable:         q.TTestTable.WithContext(ctx),
+		Coupon:           q.Coupon.WithContext(ctx),
+		CouponBatch:      q.CouponBatch.WithContext(ctx),
+		CouponIssue:      q.CouponIssue.WithContext(ctx),
+		CouponVerify:     q.CouponVerify.WithContext(ctx),
+		Customer:         q.Customer.WithContext(ctx),
+		Settlement:       q.Settlement.WithContext(ctx),
+		SettlementDetail: q.SettlementDetail.WithContext(ctx),
+		Supplier:         q.Supplier.WithContext(ctx),
+		User:             q.User.WithContext(ctx),
 	}
 }
 
