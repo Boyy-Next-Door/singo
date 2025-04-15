@@ -1,4 +1,4 @@
-package model
+package dal
 
 import (
 	"log"
@@ -15,7 +15,7 @@ import (
 var DB *gorm.DB
 
 // Database 在中间件中初始化mysql链接
-func Database(connString string) {
+func Database(connString string) *gorm.DB {
 	// 初始化GORM日志配置
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -47,6 +47,6 @@ func Database(connString string) {
 	//打开
 	sqlDB.SetMaxOpenConns(20)
 	DB = db
-
-	migration()
+	return DB
+	//migration()
 }

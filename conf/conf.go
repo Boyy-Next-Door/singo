@@ -1,9 +1,10 @@
 package conf
 
 import (
+	"fmt"
 	"os"
 	"singo/cache"
-	"singo/model"
+	"singo/dal"
 	"singo/util"
 
 	"github.com/joho/godotenv"
@@ -23,6 +24,9 @@ func Init() {
 	}
 
 	// 连接数据库
-	model.Database(os.Getenv("MYSQL_DSN"))
+	mysqlDSN := os.Getenv("MYSQL_DSN")
+	util.Log().Info("mysqlDSN: %v", mysqlDSN)
+	fmt.Println(mysqlDSN)
+	dal.Database(mysqlDSN)
 	cache.Redis()
 }

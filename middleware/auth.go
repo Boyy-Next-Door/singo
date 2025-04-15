@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"singo/model"
+	"singo/dal"
 	"singo/serializer"
 
 	"github.com/gin-contrib/sessions"
@@ -14,7 +14,7 @@ func CurrentUser() gin.HandlerFunc {
 		session := sessions.Default(c)
 		uid := session.Get("user_id")
 		if uid != nil {
-			user, err := model.GetUser(uid)
+			user, err := dal.GetUser(uid)
 			if err == nil {
 				c.Set("user", &user)
 			}
@@ -27,7 +27,7 @@ func CurrentUser() gin.HandlerFunc {
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if user, _ := c.Get("user"); user != nil {
-			if _, ok := user.(*model.User); ok {
+			if _, ok := user.(*dal.User); ok {
 				c.Next()
 				return
 			}

@@ -1,4 +1,4 @@
-package model
+package dal
 
 //执行数据迁移
 

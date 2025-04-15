@@ -4,8 +4,8 @@ import (
 	"os"
 	"singo/cache"
 	"singo/conf"
-	"singo/model"
-	"singo/server"
+	"singo/dal"
+	"singo/router"
 	"singo/util"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,7 @@ func init() {
 	// 从配置文件读取配置
 	confInit()
 	// API
-	s = server.NewRouter()
+	s = router.NewRouter()
 }
 
 // Init 初始化配置项
@@ -37,6 +37,8 @@ func confInit() {
 	}
 
 	// 连接数据库
-	model.Database(os.Getenv("MYSQL_DSN"))
+	mysqlDSN := os.Getenv("MYSQL_DSN")
+	util.Log().Info("mysqlDSN: %v", mysqlDSN)
+	dal.Database(mysqlDSN)
 	cache.Redis()
 }

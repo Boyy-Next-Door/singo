@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"singo/conf"
-	"singo/server"
+	"singo/router"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +14,6 @@ func main() {
 
 	// 装载路由
 	gin.SetMode(os.Getenv("GIN_MODE"))
-	r := server.NewRouter()
+	r := router.NewRouter()
 	r.Run(":3000")
 }

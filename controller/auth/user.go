@@ -1,8 +1,9 @@
-package api
+package auth
 
 import (
+	"singo/controller"
 	"singo/serializer"
-	"singo/service"
+	"singo/service/auth"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -10,29 +11,29 @@ import (
 
 // UserRegister 用户注册接口
 func UserRegister(c *gin.Context) {
-	var service service.UserRegisterService
+	var service auth.UserRegisterService
 	if err := c.ShouldBind(&service); err == nil {
 		res := service.Register()
 		c.JSON(200, res)
 	} else {
-		c.JSON(200, ErrorResponse(err))
+		c.JSON(200, controller.ErrorResponse(err))
 	}
 }
 
 // UserLogin 用户登录接口
 func UserLogin(c *gin.Context) {
-	var service service.UserLoginService
+	var service auth.UserLoginService
 	if err := c.ShouldBind(&service); err == nil {
 		res := service.Login(c)
 		c.JSON(200, res)
 	} else {
-		c.JSON(200, ErrorResponse(err))
+		c.JSON(200, controller.ErrorResponse(err))
 	}
 }
 
 // UserMe 用户详情
 func UserMe(c *gin.Context) {
-	user := CurrentUser(c)
+	user := controller.CurrentUser(c)
 	res := serializer.BuildUserResponse(*user)
 	c.JSON(200, res)
 }

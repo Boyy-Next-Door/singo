@@ -1,7 +1,7 @@
-package service
+package auth
 
 import (
-	"singo/model"
+	"singo/dal"
 	"singo/serializer"
 )
 
@@ -23,7 +23,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	}
 
 	count := int64(0)
-	model.DB.Model(&model.User{}).Where("nickname = ?", service.Nickname).Count(&count)
+	dal.DB.Model(&dal.User{}).Where("nickname = ?", service.Nickname).Count(&count)
 	if count > 0 {
 		return &serializer.Response{
 			Code: 40001,
@@ -32,7 +32,7 @@ func (service *UserRegisterService) valid() *serializer.Response {
 	}
 
 	count = 0
-	model.DB.Model(&model.User{}).Where("user_name = ?", service.UserName).Count(&count)
+	dal.DB.Model(&dal.User{}).Where("user_name = ?", service.UserName).Count(&count)
 	if count > 0 {
 		return &serializer.Response{
 			Code: 40001,
@@ -45,10 +45,10 @@ func (service *UserRegisterService) valid() *serializer.Response {
 
 // Register 用户注册
 func (service *UserRegisterService) Register() serializer.Response {
-	user := model.User{
+	user := dal.User{
 		Nickname: service.Nickname,
 		UserName: service.UserName,
-		Status:   model.Active,
+		Status:   dal.Active,
 	}
 
 	// 表单验证
@@ -66,7 +66,7 @@ func (service *UserRegisterService) Register() serializer.Response {
 	}
 
 	// 创建用户
-	if err := model.DB.Create(&user).Error; err != nil {
+	if err := dal.DB.Create(&user).Error; err != nil {
 		return serializer.ParamErr("注册失败", err)
 	}
 
